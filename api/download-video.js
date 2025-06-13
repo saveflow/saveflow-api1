@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import youtubedl from 'yt-dlp-exec';
+import { YtDlpWrap } from 'yt-dlp-wrap';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegPath from 'ffmpeg-static';
 import fs from 'fs';
@@ -29,11 +29,17 @@ export default async function handler(req, res) {
         const videoId = uuidv4();
 
         // Download video as mp4
-        const videoPath = `/tmp/${videoId}.mp4`;
-        await youtubedl(url, {
-            output: videoPath,
-            format: 'mp4',
-        });
+      const videoPath = `/tmp/${videoId}.mp4`;
+
+const ytDlpWrap = new YtDlpWrap();
+
+await ytDlpWrap.execPromise([
+  url,
+  '-f', 'mp4',
+  '-o', videoPath,
+  '--no-playlist' // Important → prevents playlist errors
+]);
+
 
         // Extract thumbnail
         const thumbnailPath = `/tmp/${videoId}.jpg`;
