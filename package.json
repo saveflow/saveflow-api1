@@ -19,5 +19,8 @@
   "homepage": "https://github.com/saveflow/saveflow-api1#readme",
   "devDependencies": {
     "ffmpeg-static": "^5.2.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.50.0"
   }
 }
